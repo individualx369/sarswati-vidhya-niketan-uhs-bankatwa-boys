@@ -1,0 +1,4 @@
+const crypto = require('crypto');
+function sign(value){return crypto.createHmac('sha256',process.env.ADMIN_SESSION_SECRET||'').update(value).digest('base64url')}
+function parseCookie(header){return Object.fromEntries((header||'').split(';').filter(Boolean).map(x=>{const i=x.indexOf('=');return [x.slice(0,i).trim(),decodeURIComponent(x.slice(i+1).trim())]}))}
+module.exports=async(req,res)=>{if(req.method!=='GET')return res.status(405).end();const t=parseCookie(req.headers.cookie).admin_session||'';const [p,s]=t.split('.');if(!p||!s||!process.env.ADMIN_SESSION_SECRET||s!==sign(p))return res.status(401).json({authenticated:false});try{const data=JSON.parse(Buffer.from(p,'base64url').toString());if(!data.exp||Date.now()>data.exp)return res.status(401).json({authenticated:false});return res.status(200).json({authenticated:true,username:data.u})}catch{return res.status(401).json({authenticated:false})}};
