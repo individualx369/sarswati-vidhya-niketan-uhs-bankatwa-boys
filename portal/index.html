@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>विद्यालय पोर्टल | सरस्वती विद्या निकेतन</title>
+
+<style>
+:root{
+  --navy:#082b4c;
+  --navy2:#0d3b66;
+  --orange:#f47b20;
+  --cream:#fff8ef;
+  --text:#172333;
+  --muted:#667085;
+  --white:#fff;
+  --border:#e7eaf0;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Arial,"Noto Sans Devanagari",sans-serif;
+  color:var(--text);
+  background:#f7f9fc;
+}
+.top{
+  background:var(--navy);
+  color:#fff;
+  padding:9px 6%;
+  font-size:13px;
+  display:flex;
+  justify-content:space-between;
+}
+.header{
+  background:#fff;
+  border-bottom:1px solid var(--border);
+  padding:18px 6%;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:20px;
+}
+.brand{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+.logo{
+  width:48px;
+  height:48px;
+  border-radius:12px;
+  background:var(--orange);
+  color:#fff;
+  display:grid;
+  place-items:center;
+  font-size:25px;
+  font-weight:bold;
+}
+.brand h1{
+  font-size:18px;
+  margin:0 0 4px;
+}
+.brand p{
+  margin:0;
+  color:var(--muted);
+  font-size:12px;
+}
+.back{
+  color:var(--navy);
+  text-decoration:none;
+  font-weight:bold;
+}
+.hero{
+  background:linear-gradient(135deg,var(--navy),var(--navy2));
+  color:#fff;
+  padding:55px 6%;
+}
+.hero-inner{
+  max-width:1150px;
+  margin:auto;
+}
+.badge{
+  display:inline-block;
+  background:rgba(244,123,32,.18);
+  color:#ffb06c;
+  padding:7px 12px;
+  border-radius:30px;
+  font-size:13px;
+  margin-bottom:15px;
+}
+.hero h2{
+  font-size:42px;
+  margin:0 0 12px;
+}
+.hero p{
+  max-width:650px;
+  line-height:1.8;
+  color:#dce8f3;
+  margin:0;
+}
+.wrap{
+  max-width:1150px;
+  margin:auto;
+  padding:45px 6%;
+}
+.heading{
+  text-align:center;
+  margin-bottom:30px;
+}
+.heading span{
+  color:var(--orange);
+  font-weight:bold;
+  font-size:13px;
+}
+.heading h2{
+  margin:8px 0;
+  font-size:30px;
+}
+.heading p{
+  color:var(--muted);
+}
+.grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:20px;
+}
+.card{
+  background:#fff;
+  border:1px solid var(--border);
+  border-radius:18px;
+  padding:26px;
+  box-shadow:0 8px 30px rgba(20,40,60,.05);
+}
+.card.primary{
+  border-top:4px solid var(--orange);
+}
+.icon{
+  width:48px;
+  height:48px;
+  border-radius:12px;
+  background:var(--cream);
+  display:grid;
+  place-items:center;
+  font-size:24px;
+  margin-bottom:18px;
+}
+.card h3{
+  margin:0 0 8px;
+}
+.card p{
+  color:var(--muted);
+  line-height:1.65;
+  font-size:14px;
+}
+.btn{
+  display:inline-block;
+  margin-top:12px;
+  padding:11px 17px;
+  border-radius:9px;
+  text-decoration:none;
+  font-weight:bold;
+  font-size:14px;
+}
+.btn.orange{
+  background:var(--orange);
+  color:#fff;
+}
+.btn.outline{
+  border:1px solid var(--navy);
+  color:var(--navy);
+}
+.info{
+  background:var(--cream);
+}
+.footer{
+  background:var(--navy);
+  color:#dce8f3;
+  padding:30px 6%;
+  text-align:center;
+  font-size:12px;
+}
+@media(max-width:700px){
+  .top{font-size:11px}
+  .header{padding:14px 5%}
+  .brand h1{font-size:15px}
+  .hero{padding:42px 5%}
+  .hero h2{font-size:31px}
+  .grid{grid-template-columns:1fr}
+  .wrap{padding:38px 5%}
+  .back{font-size:12px}
+}
+</style>
+</head>
+
+<body>
+
+<div class="top">
+  <span>🇮🇳 बिहार सरकार • शिक्षा विभाग</span>
+  <span>U-DISE: 10020400220</span>
+</div>
+
+<header class="header">
+  <div class="brand">
+    <div class="logo">ॐ</div>
+    <div>
+      <h1>सरस्वती विद्या निकेतन</h1>
+      <p>मॉडल स्कूल • बनकटवा, पूर्वी चंपारण</p>
+    </div>
+  </div>
+  <a class="back" href="../index.html">← मुख्य वेबसाइट</a>
+</header>
+
+<section class="hero">
+  <div class="hero-inner">
+    <span class="badge">DIGITAL SCHOOL PORTAL</span>
+    <h2>विद्यालय पोर्टल</h2>
+    <p>
+      विद्यार्थियों, अभिभावकों और विद्यालय समुदाय के लिए
+      शैक्षणिक जानकारी एवं डिजिटल सेवाओं का एक सुरक्षित स्थान।
+    </p>
+  </div>
+</section>
+
+<section class="wrap">
+  <div class="heading">
+    <span>ONLINE SERVICES</span>
+    <h2>पोर्टल सेवाएँ</h2>
+    <p>आवश्यक विद्यालय सेवाओं तक एक ही स्थान से पहुँचें।</p>
+  </div>
+
+  <div class="grid">
+
+    <div class="card primary">
+      <div class="icon">🎓</div>
+      <h3>Student Portal</h3>
+      <p>
+        विद्यार्थी अपने सुरक्षित अकाउंट से विद्यालय की उपलब्ध
+        डिजिटल सुविधाओं तक पहुँच सकते हैं।
+      </p>
+      <a class="btn orange" href="../student/">Student Login →</a>
+    </div>
+
+    <div class="card">
+      <div class="icon">📢</div>
+      <h3>सूचना पटल</h3>
+      <p>
+        विद्यालय की महत्वपूर्ण सूचनाएँ, घोषणाएँ और कार्यक्रम
+        यहाँ उपलब्ध कराए जाएँगे।
+      </p>
+      <a class="btn outline" href="../index.html#notice">सूचनाएँ देखें</a>
+    </div>
+
+    <div class="card">
+      <div class="icon">📚</div>
+      <h3>Study Material</h3>
+      <p>
+        कक्षा एवं विषय के अनुसार अध्ययन सामग्री और उपयोगी
+        संसाधन भविष्य में यहाँ उपलब्ध होंगे।
+      </p>
+      <span class="btn outline">जल्द उपलब्ध</span>
+    </div>
+
+    <div class="card">
+      <div class="icon">📄</div>
+      <h3>Downloads</h3>
+      <p>
+        विद्यालय द्वारा उपलब्ध कराए जाने वाले आवश्यक
+        documents और resources यहाँ मिलेंगे।
+      </p>
+      <span class="btn outline">जल्द उपलब्ध</span>
+    </div>
+
+    <div class="card">
+      <div class="icon">🏆</div>
+      <h3>Achievements</h3>
+      <p>
+        विद्यार्थियों एवं विद्यालय की शैक्षणिक, खेल और
+        सांस्कृतिक उपलब्धियाँ यहाँ प्रदर्शित की जाएँगी।
+      </p>
+      <span class="btn outline">जल्द उपलब्ध</span>
+    </div>
+
+    <div class="card">
+      <div class="icon">👨‍🏫</div>
+      <h3>Academic Information</h3>
+      <p>
+        शैक्षणिक गतिविधियों, कक्षाओं और विद्यालय संबंधी
+        उपयोगी जानकारी के लिए यह section विकसित किया जाएगा।
+      </p>
+      <span class="btn outline">जल्द उपलब्ध</span>
+    </div>
+
+  </div>
+</section>
+
+<section class="info">
+  <div class="wrap">
+    <div class="heading">
+      <span>SECURE & SIMPLE</span>
+      <h2>सुरक्षित डिजिटल अनुभव</h2>
+      <p>
+        विद्यार्थियों की निजी जानकारी को सार्वजनिक वेबसाइट पर
+        प्रदर्शित नहीं किया जाएगा। सुरक्षित जानकारी केवल
+        अधिकृत लॉगिन के बाद उपलब्ध होगी।
+      </p>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  © 2026 सरस्वती विद्या निकेतन (मॉडल स्कूल), बनकटवा, पूर्वी चंपारण
+  <br><br>
+  U-DISE: 10020400220
+</footer>
+
+</body>
+</html>

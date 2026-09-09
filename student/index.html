@@ -3,517 +3,372 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0b4f9c">
   <title>Student Portal | सरस्वती विद्या निकेतन</title>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
   <style>
-    * {
-      box-sizing: border-box;
+    :root {
+      --navy: #071a35;
+      --blue: #0b4f9c;
+      --blue2: #0b78bd;
+      --orange: #f59e0b;
+      --ink: #172033;
+      --muted: #687386;
+      --line: #dce5ef;
+      --card: rgba(255,255,255,.94);
+      --shadow: 0 24px 70px rgba(6, 31, 66, .16);
     }
-
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
     body {
       margin: 0;
+      min-height: 100vh;
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: #f4f7fb;
-      color: #172033;
+      color: var(--ink);
+      background: #eef4fb;
     }
+    body::before, body::after {
+      content: "";
+      position: fixed;
+      width: 360px;
+      height: 360px;
+      border-radius: 50%;
+      filter: blur(12px);
+      opacity: .34;
+      pointer-events: none;
+      z-index: -1;
+    }
+    body::before { background: #8fd3ff; top: -130px; right: -100px; }
+    body::after { background: #ffd48a; bottom: -160px; left: -120px; }
 
     .topbar {
-      background: linear-gradient(135deg, #0b4f9c, #087fbd);
+      position: sticky;
+      top: 0;
+      z-index: 20;
       color: white;
-      padding: 18px;
+      background: rgba(7, 26, 53, .92);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(255,255,255,.1);
     }
-
     .topbar-inner {
-      max-width: 1050px;
+      max-width: 1120px;
       margin: auto;
+      padding: 14px 20px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 15px;
+      gap: 18px;
     }
-
-    .brand h1 {
-      margin: 0;
-      font-size: 20px;
+    .brand { display:flex; align-items:center; gap:12px; min-width:0; }
+    .brand-mark {
+      width: 44px; height: 44px; border-radius: 13px;
+      display:grid; place-items:center;
+      background: linear-gradient(145deg, #fff, #dcecff);
+      color: var(--blue); font-size: 25px; font-weight: 900;
+      box-shadow: 0 8px 25px rgba(0,0,0,.18);
+      flex: 0 0 auto;
     }
+    .brand h1 { margin:0; font-size:17px; line-height:1.2; }
+    .brand p { margin:3px 0 0; font-size:11px; opacity:.78; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .logout { display:none; border:0; border-radius:11px; padding:10px 15px; background:#ef4444; color:white; font-weight:800; cursor:pointer; }
+    .logout.visible { display:block; }
 
-    .brand p {
-      margin: 4px 0 0;
-      opacity: .9;
-      font-size: 13px;
+    .page { max-width:1120px; margin:auto; padding:34px 18px 10px; }
+    .auth-shell { min-height: calc(100vh - 130px); display:grid; place-items:center; }
+    .auth-wrap {
+      width:min(980px, 100%);
+      display:grid;
+      grid-template-columns: .95fr 1.05fr;
+      overflow:hidden;
+      border-radius:30px;
+      background:var(--card);
+      border:1px solid rgba(255,255,255,.75);
+      box-shadow:var(--shadow);
+      backdrop-filter: blur(20px);
+      animation: rise .65s ease both;
     }
-
-    .container {
-      max-width: 1050px;
-      margin: 25px auto;
-      padding: 0 15px;
+    @keyframes rise { from { opacity:0; transform:translateY(18px) scale(.985); } to { opacity:1; transform:none; } }
+    .welcome {
+      position:relative; overflow:hidden; padding:48px 38px;
+      color:white;
+      background: radial-gradient(circle at 85% 15%, rgba(255,255,255,.18), transparent 30%), linear-gradient(150deg, #06162d, #0b4f9c 65%, #087fbd);
     }
+    .welcome::before, .welcome::after { content:""; position:absolute; border:1px solid rgba(255,255,255,.16); border-radius:50%; }
+    .welcome::before { width:300px; height:300px; right:-180px; bottom:-120px; }
+    .welcome::after { width:180px; height:180px; left:-100px; top:-90px; }
+    .eyebrow { display:inline-flex; align-items:center; gap:8px; padding:7px 11px; border-radius:999px; background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.16); font-size:11px; font-weight:800; letter-spacing:.4px; }
+    .welcome h2 { margin:24px 0 12px; font-size:36px; line-height:1.08; letter-spacing:-.7px; }
+    .welcome h2 span { color:#ffd166; }
+    .welcome p { margin:0; color:rgba(255,255,255,.82); line-height:1.65; font-size:14px; }
+    .points { margin:30px 0 0; display:grid; gap:12px; }
+    .point { display:flex; gap:11px; align-items:center; font-size:13px; color:rgba(255,255,255,.9); }
+    .point i { width:28px; height:28px; display:grid; place-items:center; border-radius:9px; background:rgba(255,255,255,.12); font-style:normal; }
 
-    .card {
-      background: white;
-      border-radius: 16px;
-      padding: 22px;
-      margin-bottom: 18px;
-      box-shadow: 0 6px 25px rgba(0,0,0,.07);
+    .auth-card { padding:36px; background:rgba(255,255,255,.98); }
+    .tabs { display:flex; padding:5px; background:#edf3f9; border-radius:14px; gap:5px; margin-bottom:26px; }
+    .tab { flex:1; border:0; border-radius:10px; padding:12px 10px; background:transparent; color:#5c6879; cursor:pointer; font-weight:850; transition:.2s; }
+    .tab.active { background:white; color:var(--blue); box-shadow:0 4px 16px rgba(12,64,120,.1); }
+    .auth-title { margin:0 0 7px; color:var(--navy); font-size:27px; }
+    .sub { margin:0 0 22px; color:var(--muted); font-size:13px; line-height:1.55; }
+    .form { display:grid; gap:4px; }
+    label { display:block; margin:9px 0 5px; font-size:12px; font-weight:850; color:#354155; }
+    input {
+      width:100%; border:1px solid var(--line); background:#fbfdff; color:var(--ink);
+      border-radius:12px; padding:13px 14px; font-size:15px; outline:none; transition:.2s;
     }
-
-    .auth-card {
-      max-width: 520px;
-      margin: 45px auto;
-    }
-
-    h2 {
-      margin-top: 0;
-      color: #0b4f9c;
-    }
-
-    .tabs {
-      display: flex;
-      gap: 8px;
-      margin-bottom: 20px;
-    }
-
-    .tab {
-      flex: 1;
-      border: 0;
-      padding: 12px;
-      border-radius: 10px;
-      background: #edf3f9;
-      cursor: pointer;
-      font-weight: 700;
-    }
-
-    .tab.active {
-      background: #0b4f9c;
-      color: white;
-    }
-
-    label {
-      display: block;
-      margin: 13px 0 6px;
-      font-weight: 650;
-      font-size: 14px;
-    }
-
-    input, select {
-      width: 100%;
-      padding: 12px;
-      border: 1px solid #ccd6e2;
-      border-radius: 10px;
-      font-size: 15px;
-      outline: none;
-    }
-
-    input:focus, select:focus {
-      border-color: #0b78bd;
-    }
-
-    .btn {
-      border: 0;
-      border-radius: 10px;
-      padding: 12px 18px;
-      cursor: pointer;
-      font-weight: 700;
-      font-size: 15px;
-    }
-
+    input:focus { border-color:#3d98d0; box-shadow:0 0 0 4px rgba(61,152,208,.11); background:white; }
+    .password-row { position:relative; }
+    .password-row input { padding-right:82px; }
+    .toggle-password { position:absolute; right:8px; top:6px; border:0; background:transparent; color:var(--blue); font-weight:800; cursor:pointer; padding:7px; }
     .primary {
-      background: #0b4f9c;
-      color: white;
-      width: 100%;
-      margin-top: 18px;
+      width:100%; border:0; border-radius:12px; margin-top:17px; padding:14px 18px;
+      background:linear-gradient(135deg, var(--blue), var(--blue2)); color:white; font-size:15px; font-weight:900; cursor:pointer;
+      box-shadow:0 12px 24px rgba(11,79,156,.22); transition:transform .18s, box-shadow .18s;
+    }
+    .primary:hover { transform:translateY(-1px); box-shadow:0 15px 28px rgba(11,79,156,.27); }
+    .primary:disabled { opacity:.65; cursor:not-allowed; transform:none; }
+    .helper { margin:14px 0 0; text-align:center; font-size:12px; color:var(--muted); }
+    .message { display:none; padding:11px 12px; margin-top:14px; border-radius:11px; font-size:13px; line-height:1.45; background:#fff3f3; color:#b42318; }
+    .message.success { background:#edf9f1; color:#16733b; }
+    .message.show { display:block; }
+    .hidden { display:none !important; }
+
+    .otp-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 14px;
+    }
+
+    .otp-actions button {
+      flex: 1;
+      min-width: 140px;
     }
 
     .secondary {
-      background: #edf3f9;
-      color: #0b4f9c;
-    }
-
-    .danger {
-      background: #d92d20;
-      color: white;
-    }
-
-    .message {
-      padding: 11px 13px;
-      border-radius: 9px;
-      margin-top: 15px;
-      display: none;
-      font-size: 14px;
-    }
-
-    .success {
-      background: #e8f7ee;
-      color: #16733b;
-    }
-
-    .error {
-      background: #fff0f0;
-      color: #a52222;
-    }
-
-    .hidden {
-      display: none !important;
-    }
-
-    .dashboard-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 15px;
-      flex-wrap: wrap;
-    }
-
-    .student-name {
-      font-size: 25px;
-      font-weight: 800;
-      color: #0b4f9c;
-    }
-
-    .badge {
-      display: inline-block;
-      padding: 5px 10px;
-      background: #e8f2ff;
-      color: #0b4f9c;
-      border-radius: 20px;
-      font-size: 12px;
-      font-weight: 700;
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 15px;
-    }
-
-    .info {
-      background: #f7f9fc;
-      padding: 14px;
+      border: 1px solid #d6dce8;
+      background: #fff;
+      color: #173b73;
+      padding: 11px 14px;
       border-radius: 10px;
+      font-weight: 700;
+      cursor: pointer;
     }
 
-    .info small {
-      display: block;
-      color: #687386;
-      margin-bottom: 5px;
-    }
-
-    .info strong {
-      word-break: break-word;
-    }
-
-    .features {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 15px;
-    }
-
-    .feature {
-      padding: 20px;
-      background: #f7f9fc;
-      border-radius: 13px;
+    #otpCode {
       text-align: center;
+      letter-spacing: 8px;
+      font-size: 24px;
+      font-weight: 800;
     }
 
-    .feature .icon {
-      font-size: 30px;
+    .dashboard { display:none; animation:rise .45s ease both; }
+    .dashboard.visible { display:block; }
+    .hero-card { padding:28px; border-radius:24px; color:white; background:linear-gradient(135deg,#06162d,#0b4f9c 60%,#087fbd); box-shadow:var(--shadow); }
+    .dashboard-head { display:flex; justify-content:space-between; gap:18px; align-items:center; flex-wrap:wrap; }
+    .welcome-small { font-size:12px; opacity:.75; margin-bottom:5px; }
+    .student-name { font-size:29px; font-weight:900; }
+    .badge { display:inline-block; margin-top:8px; padding:6px 10px; border-radius:999px; background:rgba(255,255,255,.14); font-size:12px; font-weight:800; }
+    .refresh { border:1px solid rgba(255,255,255,.22); background:rgba(255,255,255,.1); color:white; border-radius:11px; padding:11px 14px; cursor:pointer; font-weight:800; }
+    .card { margin-top:18px; padding:24px; border-radius:20px; background:white; box-shadow:0 10px 32px rgba(20,48,84,.08); }
+    .card h3 { margin:0 0 17px; color:var(--navy); font-size:19px; }
+    .grid { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; }
+    .info { padding:14px; border:1px solid #edf1f6; border-radius:13px; background:#fbfdff; }
+    .info small { display:block; color:var(--muted); margin-bottom:5px; font-size:11px; }
+    .info strong { word-break:break-word; font-size:14px; }
+    .features { display:grid; grid-template-columns:repeat(3,1fr); gap:13px; }
+    .feature { padding:19px; border:1px solid #edf1f6; border-radius:15px; background:#fbfdff; }
+    .feature .icon { font-size:27px; }
+    .feature h4 { margin:9px 0 5px; font-size:16px; }
+    .feature p { margin:0; color:var(--muted); font-size:12px; line-height:1.5; }
+    .footer { text-align:center; color:#718096; font-size:12px; padding:25px 10px 35px; }
+
+    @media(max-width:800px) {
+      .auth-wrap { grid-template-columns:1fr; border-radius:23px; }
+      .welcome { padding:30px 25px; }
+      .welcome h2 { font-size:29px; }
+      .welcome .points { display:none; }
+      .auth-card { padding:25px 20px; }
+      .grid, .features { grid-template-columns:1fr 1fr; }
     }
-
-    .feature h3 {
-      margin: 8px 0 5px;
-      font-size: 17px;
-    }
-
-    .feature p {
-      margin: 0;
-      font-size: 13px;
-      color: #697586;
-    }
-
-    .links a {
-      display: block;
-      padding: 13px;
-      margin: 8px 0;
-      border-radius: 9px;
-      background: #f2f6fa;
-      color: #07579f;
-      text-decoration: none;
-      font-weight: 650;
-    }
-
-    .footer {
-      text-align: center;
-      color: #718096;
-      font-size: 13px;
-      padding: 25px 10px;
-    }
-
-    @media(max-width: 700px) {
-      .grid,
-      .features {
-        grid-template-columns: 1fr;
-      }
-
-      .topbar-inner {
-        align-items: flex-start;
-        flex-direction: column;
-      }
-
-      .dashboard-header .btn {
-        width: 100%;
-      }
+    @media(max-width:520px) {
+      .topbar-inner { padding:11px 14px; }
+      .brand-mark { width:38px; height:38px; font-size:21px; }
+      .brand h1 { font-size:14px; }
+      .brand p { font-size:9px; }
+      .logout { padding:9px 11px; font-size:12px; }
+      .page { padding:20px 12px 5px; }
+      .auth-shell { min-height:calc(100vh - 90px); }
+      .welcome { padding:26px 20px; }
+      .welcome h2 { margin-top:17px; font-size:27px; }
+      .auth-card { padding:20px 16px; }
+      .grid, .features { grid-template-columns:1fr; }
+      .student-name { font-size:24px; }
+      .hero-card, .card { padding:20px; border-radius:18px; }
     }
   </style>
 </head>
-
 <body>
-
-<header class="topbar">
-  <div class="topbar-inner">
-    <div class="brand">
-      <h1>सरस्वती विद्या निकेतन</h1>
-      <p>उत्क्रमित उच्चतर माध्यमिक विद्यालय, बनकटवा, पूर्वी चंपारण</p>
-    </div>
-
-    <button id="logoutBtn"
-            class="btn danger hidden"
-            onclick="logout()">
-      Logout
-    </button>
-  </div>
-</header>
-
-
-<main class="container">
-
-  <!-- AUTH SECTION -->
-  <section id="authSection" class="card auth-card">
-
-    <div class="tabs">
-      <button id="loginTab"
-              class="tab active"
-              onclick="showLogin()">
-        Student Login
-      </button>
-
-      <button id="signupTab"
-              class="tab"
-              onclick="showSignup()">
-        Student Signup
-      </button>
-    </div>
-
-
-    <!-- LOGIN -->
-    <div id="loginBox">
-
-      <h2>Student Login</h2>
-
-      <p>
-        अपने registered email और password से login करें।
-      </p>
-
-      <label>Email</label>
-      <input
-        id="loginEmail"
-        type="email"
-        placeholder="student@example.com"
-        autocomplete="email"
-      >
-
-      <label>Password</label>
-      <input
-        id="loginPassword"
-        type="password"
-        placeholder="Password"
-        autocomplete="current-password"
-      >
-
-      <button class="btn primary" onclick="login()">
-        Login
-      </button>
-
-      <div id="loginMessage" class="message"></div>
-
-    </div>
-
-
-    <!-- SIGNUP -->
-    <div id="signupBox" class="hidden">
-
-      <h2>Student Signup</h2>
-
-      <p>
-        पहले से school में registered student अपना account बनाएँ।
-      </p>
-
-      <label>Full Name</label>
-      <input
-        id="signupName"
-        type="text"
-        placeholder="Student का नाम"
-      >
-
-      <label>Email</label>
-      <input
-        id="signupEmail"
-        type="email"
-        placeholder="student@example.com"
-        autocomplete="email"
-      >
-
-      <label>Password</label>
-      <input
-        id="signupPassword"
-        type="password"
-        placeholder="कम से कम 6 characters"
-        autocomplete="new-password"
-      >
-
-      <label>Admission Number</label>
-      <input
-        id="signupAdmission"
-        type="text"
-        placeholder="Admission No."
-      >
-
-      <label>Student Access Code</label>
-      <input
-        id="signupCode"
-        type="text"
-        placeholder="Admin द्वारा दिया गया code"
-      >
-
-      <button class="btn primary" onclick="signup()">
-        Create Student Account
-      </button>
-
-      <div id="signupMessage" class="message"></div>
-
-    </div>
-
-  </section>
-
-
-  <!-- DASHBOARD -->
-  <section id="dashboardSection" class="hidden">
-
-    <div class="card">
-
-      <div class="dashboard-header">
-
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <div class="brand-mark">ॐ</div>
         <div>
-          <div class="student-name" id="studentName">
-            Student
+          <h1>सरस्वती विद्या निकेतन</h1>
+          <p>उत्क्रमित उच्चतर माध्यमिक विद्यालय, बनकटवा, पूर्वी चंपारण</p>
+        </div>
+      </div>
+      <button id="logoutBtn" class="logout" type="button" onclick="logout()">Logout</button>
+    </div>
+  </header>
+
+  <main class="page">
+    <section id="authSection" class="auth-shell">
+      <div class="auth-wrap">
+        <div class="welcome">
+          <div class="eyebrow">🎓 सुरक्षित विद्यार्थी पोर्टल</div>
+          <h2>आपकी पढ़ाई,<br><span>आपकी पहचान।</span></h2>
+          <p>विद्यालय में पंजीकृत विद्यार्थी अपने Admission Number और School Access Code से अपना सुरक्षित portal account बना सकते हैं।</p>
+          <div class="points">
+            <div class="point"><i>🔐</i><span>Secure email & password login</span></div>
+            <div class="point"><i>📚</i><span>Personal academic information</span></div>
+            <div class="point"><i>🏫</i><span>School-managed student records</span></div>
+          </div>
+        </div>
+
+        <div class="auth-card">
+          <div class="tabs">
+            <button id="loginTab" class="tab active" type="button" onclick="showLogin()">Student Login</button>
+            <button id="signupTab" class="tab" type="button" onclick="showSignup()">Student Signup</button>
           </div>
 
-          <span class="badge" id="studentClass">
-            Class
-          </span>
+          <div id="loginBox">
+            <h2 class="auth-title">Student Login</h2>
+            <p class="sub">अपने registered email और password से secure login करें।</p>
+            <form id="loginForm" class="form" onsubmit="return login(event)">
+              <label for="loginEmail">Email</label>
+              <input id="loginEmail" type="email" placeholder="student@example.com" autocomplete="email" required>
+              <label for="loginPassword">Password</label>
+              <div class="password-row">
+                <input id="loginPassword" type="password" placeholder="Password" autocomplete="current-password" required>
+                <button class="toggle-password" type="button" data-target="loginPassword">Show</button>
+              </div>
+              <button id="loginButton" class="primary" type="submit">Login securely</button>
+            </form>
+            <div id="loginMessage" class="message"></div>
+            <p class="helper">Account नहीं है? ऊपर <b>Student Signup</b> चुनें।</p>
+          </div>
+
+          <div id="signupBox" class="hidden">
+            <h2 class="auth-title">Create Student Account</h2>
+            <p class="sub">यह सुविधा केवल विद्यालय में पहले से registered विद्यार्थियों के लिए है।</p>
+            <form id="signupForm" class="form" onsubmit="return signup(event)">
+              <label for="signupName">Full Name</label>
+              <input id="signupName" type="text" placeholder="Student का नाम" autocomplete="name" required>
+              <label for="signupEmail">Email</label>
+              <input id="signupEmail" type="email" placeholder="student@example.com" autocomplete="email" required>
+              <label for="signupPassword">Password</label>
+              <div class="password-row">
+                <input id="signupPassword" type="password" placeholder="कम से कम 6 characters" autocomplete="new-password" minlength="6" required>
+                <button class="toggle-password" type="button" data-target="signupPassword">Show</button>
+              </div>
+              <label for="signupAdmission">Admission Number</label>
+              <input id="signupAdmission" type="text" placeholder="Admission No." autocomplete="off" required>
+              <label for="signupCode">Student Access Code</label>
+              <input id="signupCode" type="text" placeholder="School द्वारा दिया गया code" autocomplete="off" required>
+              <button id="signupButton" class="primary" type="submit">Create Student Account</button>
+            </form>
+            <div id="signupMessage" class="message"></div>
+            <p class="helper">Signup के बाद आपके email पर 6-digit OTP भेजा जाएगा।</p>
+          </div>
+
+          <div id="otpBox" class="auth-box hidden">
+            <div class="auth-title">📧 Email Verification</div>
+            <p class="helper">
+              आपके email पर भेजा गया <strong>6-digit OTP</strong> दर्ज करें।
+            </p>
+
+            <form id="otpForm">
+              <label for="otpCode">6-Digit OTP</label>
+              <input
+                id="otpCode"
+                type="text"
+                inputmode="numeric"
+                autocomplete="one-time-code"
+                maxlength="6"
+                pattern="[0-9]{6}"
+                placeholder="••••••"
+                required
+              >
+
+              <button id="verifyOtpButton" class="primary" type="submit">
+                Verify OTP
+              </button>
+            </form>
+
+            <div id="otpMessage" class="message"></div>
+
+            <div class="otp-actions">
+              <button id="resendOtpButton" class="secondary" type="button">
+                Resend OTP
+              </button>
+              <button id="backToSignupButton" class="secondary" type="button">
+                ← Back to Signup
+              </button>
+            </div>
+          </div>
+          </div>
         </div>
+      </div>
+    </section>
 
-        <button class="btn secondary"
-                onclick="refreshStudent()">
-          ↻ Refresh
-        </button>
-
+    <section id="dashboardSection" class="dashboard">
+      <div class="hero-card">
+        <div class="dashboard-head">
+          <div>
+            <div class="welcome-small">Welcome to Student Portal</div>
+            <div class="student-name" id="studentName">Student</div>
+            <span class="badge" id="studentClass">Class</span>
+          </div>
+          <button class="refresh" type="button" onclick="refreshStudent()">↻ Refresh</button>
+        </div>
       </div>
 
-    </div>
-
-
-    <!-- PERSONAL DETAILS -->
-    <div class="card">
-
-      <h2>👤 Personal Details</h2>
-
-      <div class="grid">
-
-        <div class="info">
-          <small>Admission Number</small>
-          <strong id="admissionNo">—</strong>
+      <div class="card">
+        <h3>👤 Personal Details</h3>
+        <div class="grid">
+          <div class="info"><small>Admission Number</small><strong id="admissionNo">—</strong></div>
+          <div class="info"><small>Roll Number</small><strong id="rollNo">—</strong></div>
+          <div class="info"><small>Class</small><strong id="classLevel">—</strong></div>
+          <div class="info"><small>Academic Session</small><strong id="session">—</strong></div>
+          <div class="info"><small>Father's Name</small><strong id="fatherName">—</strong></div>
+          <div class="info"><small>Mother's Name</small><strong id="motherName">—</strong></div>
+          <div class="info"><small>Date of Birth</small><strong id="dob">—</strong></div>
+          <div class="info"><small>Gender</small><strong id="gender">—</strong></div>
+          <div class="info"><small>Phone</small><strong id="phone">—</strong></div>
+          <div class="info"><small>Email</small><strong id="email">—</strong></div>
+          <div class="info"><small>Registration No.</small><strong id="registrationNo">—</strong></div>
+          <div class="info"><small>BSEB Roll No.</small><strong id="bsebRollNo">—</strong></div>
         </div>
-
-        <div class="info">
-          <small>Roll Number</small>
-          <strong id="rollNo">—</strong>
-        </div>
-
-        <div class="info">
-          <small>Class</small>
-          <strong id="classLevel">—</strong>
-        </div>
-
-        <div class="info">
-          <small>Academic Session</small>
-          <strong id="session">—</strong>
-        </div>
-
-        <div class="info">
-          <small>Father's Name</small>
-          <strong id="fatherName">—</strong>
-        </div>
-
-        <div class="info">
-          <small>Mother's Name</small>
-          <strong id="motherName">—</strong>
-        </div>
-
-        <div class="info">
-          <small>Date of Birth</small>
-          <strong id="dob">—</strong>
-        </div>
-
-        <div class="info">
-          <small>Gender</small>
-          <strong id="gender">—</strong>
-        </div>
-
-        <div class="info">
-          <small>Phone</small>
-          <strong id="phone">—</strong>
-        </div>
-
-        <div class="info">
-          <small>Email</small>
-          <strong id="email">—</strong>
-        </div>
-
-        <div class="info">
-          <small>Registration No.</small>
-          <strong id="registrationNo">—</strong>
-        </div>
-
-        <div class="info">
-          <small>BSEB Roll No.</small>
-          <strong id="bsebRollNo">—</strong>
-        </div>
-
       </div>
 
-    </div>
-
-
-    <!-- FEATURES -->
-    <div class="card">
-
-      <h2>🎓 Student Services</h2>
-
-      <div class="features">
-
-        <div class="feature">
-          <div class="icon">📊</div>
-          <h3>Results</h3>
-          <p>Mid-Term, Quarterly, Half-Yearly, Annual आदि</p>
+      <div class="card">
+        <h3>🎓 Student Services</h3>
+        <div class="features">
+          <div class="feature"><div class="icon">📊</div><h4>Results</h4><p>Mid-Term, Quarterly, Half-Yearly, Annual आदि परिणाम।</p></div>
+          <div class="feature"><div class="icon">📝</div><h4>Exam Forms</h4><p>Exam form और registration से जुड़ी जानकारी।</p></div>
+          <div class="feature"><div class="icon">📚</div><h4>Study Materials</h4><p>कक्षा से संबंधित अध्ययन सामग्री और महत्वपूर्ण जानकारी।</p></div>
+          <div class="feature"><div class="icon">📄</div><h4>Bonafide</h4><p>विद्यालय द्वारा उपलब्ध प्रमाण-पत्र और दस्तावेज़।</p></div>
+          <div class="feature"><div class="icon">🔔</div><h4>Notifications</h4><p>विद्यालय की महत्वपूर्ण सूचनाएँ और updates।</p></div>
+          <div class="feature"><div class="icon">🏛️</div><h4>Official Links</h4><p>BSEB, PMS और अन्य आधिकारिक portals।</p></div>
         </div>
+      </div>
+    </section>
 
-        <div class="feature">
-          <div class="icon">📝</div>
-          <h3>Exam Forms</h3>
-          <p>Exam form और registration details</p>
-        </div>
+    <div class="footer">© सरस्वती विद्या निकेतन (मॉडल स्कूल) • बनकटवा, पूर्वी चंपारण</div>
+  </main>
 
-        <div class="feature">
-         
+  <script src="auth.js"></script>
+</body>
+</html>

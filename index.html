@@ -8,16 +8,207 @@
 :root{--navy:#0b2545;--blue:#123e6a;--orange:#f47b20;--cream:#fff8ef;--text:#172033;--muted:#667085;--white:#fff;--line:#e8edf3}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:system-ui,-apple-system,"Noto Sans Devanagari",sans-serif;color:var(--text);background:#fff;line-height:1.65}a{text-decoration:none;color:inherit}.top{background:var(--navy);color:#fff;padding:9px 5%;display:flex;justify-content:space-between;gap:15px;font-size:13px}.nav{position:sticky;top:0;z-index:10;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:14px 5%;box-shadow:0 3px 18px #0b25450d}.brand{display:flex;align-items:center;gap:11px;font-weight:800;color:var(--navy)}.logo{width:43px;height:43px;border-radius:12px;background:linear-gradient(135deg,var(--orange),#ffb25c);display:grid;place-items:center;color:#fff;font-size:22px}.links{display:flex;gap:22px;font-size:14px;font-weight:700;color:#344054}.links a:hover{color:var(--orange)}.menu{display:none;background:none;border:0;font-size:26px}.hero{background:linear-gradient(135deg,var(--navy),var(--blue));color:#fff;padding:80px 5% 75px;position:relative;overflow:hidden}.hero:after{content:"";position:absolute;width:380px;height:380px;border-radius:50%;background:#f47b2022;right:-100px;top:-120px}.hero-inner{max-width:1120px;margin:auto;position:relative;z-index:1;display:grid;grid-template-columns:1.25fr .75fr;gap:50px;align-items:center}.eyebrow{color:#ffc078;font-weight:800;letter-spacing:.5px}.hero h1{font-size:clamp(34px,5vw,62px);line-height:1.15;margin:12px 0 16px}.hero p{font-size:18px;color:#d9e5f2;max-width:700px}.buttons{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}.btn{padding:12px 20px;border-radius:10px;font-weight:800;border:1px solid transparent}.primary{background:var(--orange);color:#fff}.secondary{border-color:#ffffff55;color:#fff}.photo-card{background:#ffffff12;border:1px solid #ffffff25;border-radius:22px;padding:14px;box-shadow:0 20px 50px #0003}.photo{height:320px;border-radius:15px;background:linear-gradient(135deg,#f47b20,#ffb866);display:grid;place-items:center;text-align:center;padding:30px;color:#fff;font-weight:800}.photo small{display:block;font-weight:500;margin-top:8px;color:#fffddc}.section{padding:72px 5%}.wrap{max-width:1120px;margin:auto}.heading{text-align:center;margin-bottom:42px}.heading span{color:var(--orange);font-weight:800}.heading h2{font-size:34px;margin:6px 0}.heading p{color:var(--muted);max-width:680px;margin:auto}.about{display:grid;grid-template-columns:1fr 1fr;gap:42px;align-items:center}.card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:25px;box-shadow:0 10px 30px #1018280b}.facts{display:grid;grid-template-columns:1fr 1fr;gap:14px}.fact{padding:18px;background:var(--cream);border-radius:14px}.fact b{display:block;font-size:25px;color:var(--navy)}.quote{background:var(--cream);border-left:5px solid var(--orange);padding:25px;border-radius:0 16px 16px 0}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.feature h3{margin:10px 0 5px}.icon{font-size:30px}.feature p,.notice p{color:var(--muted);margin:0}.notice{display:flex;gap:16px;align-items:flex-start}.date{min-width:68px;text-align:center;background:var(--navy);color:#fff;border-radius:10px;padding:7px}.date b{display:block;font-size:20px}.gallery{display:grid;grid-template-columns:2fr 1fr 1fr;grid-auto-rows:170px;gap:12px}.gallery .g{border-radius:16px;background:linear-gradient(135deg,#ffb25c,#f47b20);display:grid;place-items:center;color:#fff;font-weight:800;overflow:hidden}.gallery .big{grid-row:span 2}.contact{background:var(--navy);color:#fff}.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:30px}.contact p{color:#d9e5f2}.contact a{color:#ffc078}.footer{background:#071a31;color:#c5d2e0;padding:22px 5%;text-align:center;font-size:13px}.admin-note{margin-top:18px;font-size:12px;color:#9db0c5}
 @media(max-width:800px){.links{display:none}.menu{display:block;color:var(--navy)}.hero-inner,.about,.contact-grid{grid-template-columns:1fr}.hero{padding-top:55px}.photo{height:230px}.grid{grid-template-columns:1fr}.gallery{grid-template-columns:1fr 1fr;grid-auto-rows:140px}.gallery .big{grid-row:span 1}.top{font-size:11px}.section{padding:55px 5%}}
 </style>
+
+<style>
+.school-slider{
+  position:relative;
+  width:100%;
+  height:100%;
+  min-height:280px;
+  overflow:hidden;
+  border-radius:14px;
+  background:#12385f;
+}
+.school-slider .slide{
+  position:absolute;
+  inset:0;
+  opacity:0;
+  transition:opacity .6s ease;
+}
+.school-slider .slide.active{
+  opacity:1;
+}
+.school-slider img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+}
+.slider-btn{
+  position:absolute;
+  top:50%;
+  transform:translateY(-50%);
+  z-index:5;
+  width:42px;
+  height:42px;
+  border:0;
+  border-radius:50%;
+  background:rgba(0,0,0,.55);
+  color:#fff;
+  font-size:30px;
+  line-height:38px;
+  cursor:pointer;
+}
+.slider-btn.prev{left:12px}
+.slider-btn.next{right:12px}
+.slider-dots{
+  position:absolute;
+  z-index:5;
+  bottom:12px;
+  left:50%;
+  transform:translateX(-50%);
+  display:flex;
+  gap:8px;
+}
+.slider-dots .dot{
+  width:10px;
+  height:10px;
+  padding:0;
+  border:0;
+  border-radius:50%;
+  background:rgba(255,255,255,.65);
+  cursor:pointer;
+}
+.slider-dots .dot.active{
+  background:#fff;
+  transform:scale(1.3);
+}
+@media(max-width:600px){
+  .school-slider{min-height:220px}
+  .slider-btn{
+    width:36px;
+    height:36px;
+    font-size:25px;
+  }
+}
+</style>
+
+
+<style>
+.portal-link{
+  display:inline-block;
+  background:#f47b20;
+  color:#fff !important;
+  text-decoration:none;
+  padding:9px 14px;
+  border-radius:8px;
+  font-weight:700;
+  margin-left:10px;
+  white-space:nowrap;
+}
+.portal-link:hover{
+  opacity:.9;
+}
+@media(max-width:700px){
+  .portal-link{
+    padding:8px 10px;
+    font-size:11px;
+    margin-left:5px;
+  }
+}
+</style>
+
 </head>
 <body>
 <div class="top"><span>🏫 सरकारी विद्यालय पोर्टल</span><span>U-DISE Code: 10020400220</span></div>
-<nav class="nav"><a class="brand" href="#home"><span class="logo">ॐ</span><span>सरस्वती विद्या निकेतन<br><small>मॉडल स्कूल • बनकटवा</small></span></a><div class="links"><a href="#about">विद्यालय</a><a href="#principal">प्रधानाचार्य संदेश</a><a href="#academics">शिक्षण</a><a href="#notice">सूचना</a><a href="#gallery">गैलरी</a><a href="#contact">संपर्क</a></div><button class="menu" aria-label="Menu">☰</button></nav>
-<header id="home" class="hero"><div class="hero-inner"><div><div class="eyebrow">उत्क्रमित उच्चतर माध्यमिक विद्यालय</div><h1>ज्ञान • संस्कार • सफलता</h1><p>सरस्वती विद्या निकेतन (मॉडल स्कूल), बनकटवा, पूर्वी चंपारण — गुणवत्तापूर्ण शिक्षा और विद्यार्थियों के सर्वांगीण विकास के लिए समर्पित।</p><div class="buttons"><a class="btn primary" href="#about">विद्यालय के बारे में</a><a class="btn secondary" href="#contact">संपर्क जानकारी</a></div></div><div class="photo-card"><div class="photo">विद्यालय भवन की फोटो<br><small>यहाँ वास्तविक स्कूल फोटो जोड़ी जाएगी</small></div></div></div></header>
+<nav class="nav"><a class="brand" href="#home"><span class="logo">ॐ</span><span>सरस्वती विद्या निकेतन<br><small>मॉडल स्कूल • बनकटवा</small></span></a><div class="links"><a href="#about">विद्यालय</a><a href="#principal">प्रधानाचार्य संदेश</a><a href="#academics">शैक्षणिक गतिविधियाँ</a><a href="#notice">सूचना पटल</a><a href="#gallery">फोटो गैलरी</a><a href="#contact">संपर्क</a></div><a class="portal-link" href="portal/">विद्यालय पोर्टल</a><button class="menu" aria-label="Menu">☰</button></nav>
+<header id="home" class="hero"><div class="hero-inner"><div><div class="eyebrow">उत्क्रमित उच्चतर माध्यमिक विद्यालय</div><h1>ज्ञान • संस्कार • सफलता</h1><p>सरस्वती विद्या निकेतन (मॉडल स्कूल), बनकटवा, पूर्वी चंपारण — गुणवत्तापूर्ण शिक्षा और विद्यार्थियों के सर्वांगीण विकास के लिए समर्पित।</p><div class="buttons"><a class="btn primary" href="#about">विद्यालय के बारे में</a><a class="btn secondary" href="#contact">संपर्क जानकारी</a></div></div><div class="photo-card">
+<div class="school-slider">
+  <div class="slide active">
+    <img src="assets/school-building.jpg" alt="विद्यालय भवन">
+  </div>
+  <div class="slide">
+    <img src="assets/school-activity.jpg" alt="विद्यालय गतिविधि">
+  </div>
+  <div class="slide">
+    <img src="assets/school-classroom.jpg" alt="विद्यालय कक्षा">
+  </div>
+
+  <button class="slider-btn prev" aria-label="पिछली फोटो">‹</button>
+  <button class="slider-btn next" aria-label="अगली फोटो">›</button>
+
+  <div class="slider-dots">
+    <button class="dot active" aria-label="फोटो 1"></button>
+    <button class="dot" aria-label="फोटो 2"></button>
+    <button class="dot" aria-label="फोटो 3"></button>
+  </div>
+</div>
+</div></div></header>
 <section id="about" class="section"><div class="wrap"><div class="heading"><span>हमारे बारे में</span><h2>हमारा विद्यालय</h2><p>स्थानीय विद्यार्थियों को बेहतर शैक्षणिक वातावरण, अनुशासन और अवसर प्रदान करने की दिशा में एक समर्पित विद्यालय।</p></div><div class="about"><div><p>सरस्वती विद्या निकेतन (मॉडल स्कूल), उत्क्रमित उच्चतर माध्यमिक विद्यालय, बनकटवा, पूर्वी चंपारण विद्यार्थियों के ज्ञान, कौशल, चरित्र और आत्मविश्वास के विकास पर केंद्रित है।</p><p>यह पोर्टल विद्यालय की सूचनाएँ, शैक्षणिक गतिविधियाँ, उपलब्धियाँ, नोटिस और महत्वपूर्ण संसाधन एक ही स्थान पर उपलब्ध कराने के लिए बनाया जा रहा है।</p></div><div class="facts"><div class="fact"><b>10020400220</b>U-DISE Code</div><div class="fact"><b>9–12</b>उच्चतर माध्यमिक स्तर</div><div class="fact"><b>बनकटवा</b>पूर्वी चंपारण, बिहार</div><div class="fact"><b>2026</b>डिजिटल पोर्टल</div></div></div></div></section>
 <section id="principal" class="section" style="background:#f8fafc"><div class="wrap"><div class="heading"><span>विद्यालय नेतृत्व</span><h2>प्रधानाचार्य का संदेश</h2></div><div class="card quote"><p>“हमारा लक्ष्य प्रत्येक विद्यार्थी को सीखने, आगे बढ़ने और अपने सपनों को साकार करने के लिए सुरक्षित, अनुशासित और प्रेरणादायक वातावरण देना है। शिक्षा केवल परीक्षा तक सीमित नहीं, बल्कि अच्छे नागरिक के निर्माण की प्रक्रिया है।”</p><strong>— प्रधानाचार्य, सरस्वती विद्या निकेतन (मॉडल स्कूल)</strong></div></div></section>
 <section id="academics" class="section"><div class="wrap"><div class="heading"><span>शिक्षा एवं गतिविधियाँ</span><h2>विद्यालय की प्रमुख सुविधाएँ</h2></div><div class="grid"><div class="card feature"><div class="icon">📚</div><h3>शैक्षणिक शिक्षा</h3><p>विषयवार अध्ययन, नियमित कक्षाएँ और सीखने पर केंद्रित वातावरण।</p></div><div class="card feature"><div class="icon">💻</div><h3>डिजिटल संसाधन</h3><p>विद्यार्थियों के लिए डिजिटल सामग्री और ऑनलाइन सूचना व्यवस्था।</p></div><div class="card feature"><div class="icon">🏆</div><h3>प्रतिभा एवं उपलब्धियाँ</h3><p>खेल, सांस्कृतिक और शैक्षणिक उपलब्धियों को प्रोत्साहन।</p></div></div></div></section>
-<section id="notice" class="section" style="background:var(--cream)"><div class="wrap"><div class="heading"><span>नोटिस बोर्ड</span><h2>महत्वपूर्ण सूचनाएँ</h2><p>नवीनतम विद्यालय सूचनाएँ यहाँ प्रकाशित की जाएँगी।</p></div><div class="grid"><div class="card notice"><div class="date"><b>01</b>सूचना</div><div><h3>विद्यालय पोर्टल प्रारंभ</h3><p>विद्यालय की डिजिटल जानकारी और संसाधनों को एक स्थान पर लाने के लिए पोर्टल तैयार किया जा रहा है।</p></div></div><div class="card notice"><div class="date"><b>02</b>अपडेट</div><div><h3>शैक्षणिक गतिविधियाँ</h3><p>नई गतिविधियों और कार्यक्रमों की जानकारी शीघ्र प्रकाशित की जाएगी।</p></div></div></div></div></section>
-<section id="gallery" class="section"><div class="wrap"><div class="heading"><span>विद्यालय की झलक</span><h2>फोटो गैलरी</h2></div><div class="gallery"><div class="g big">🏫<br>विद्यालय भवन</div><div class="g">👨‍🏫<br>शिक्षक</div><div class="g">🎓<br>विद्यार्थी</div><div class="g">📖<br>कक्षा</div><div class="g">🏅<br>उपलब्धियाँ</div></div></div></section>
-<section id="contact" class="section contact"><div class="wrap"><div class="heading"><span>संपर्क</span><h2>विद्यालय से जुड़ें</h2></div><div class="contact-grid"><div><h3>सरस्वती विद्या निकेतन (मॉडल स्कूल)</h3><p>उत्क्रमित उच्चतर माध्यमिक विद्यालय, बनकटवा, पूर्वी चंपारण, बिहार</p><p><strong>U-DISE:</strong> 10020400220</p></div><div><h3>महत्वपूर्ण लिंक</h3><p><a href="#notice">नोटिस बोर्ड</a> · <a href="#academics">शैक्षणिक जानकारी</a> · <a href="#gallery">फोटो गैलरी</a></p><p class="admin-note">भविष्य में इस पोर्टल में डाउनलोड, स्टाफ प्रोफाइल और सुरक्षित एडमिन पैनल जोड़ा जा सकता है।</p></div></div></div></section>
+<section id="notice" class="section" style="background:var(--cream)"><div class="wrap"><div class="heading"><span>सूचना पटल</span><h2>महत्वपूर्ण सूचनाएँ</h2><p>नवीनतम विद्यालय सूचनाएँ यहाँ प्रकाशित की जाएँगी।</p></div><div class="grid"><div class="card notice"><div class="date"><b>01</b>सूचना पटल</div><div><h3>विद्यालय पोर्टल प्रारंभ</h3><p>विद्यालय की डिजिटल जानकारी और संसाधनों को एक स्थान पर लाने के लिए पोर्टल तैयार किया जा रहा है।</p></div></div><div class="card notice"><div class="date"><b>02</b>अपडेट</div><div><h3>शैक्षणिक गतिविधियाँ</h3><p>नई गतिविधियों और कार्यक्रमों की जानकारी शीघ्र प्रकाशित की जाएगी।</p></div></div></div></div></section>
+<section id="gallery" class="section"><div class="wrap"><div class="heading"><span>विद्यालय की झलकियाँ</span><h2>फोटो गैलरी</h2></div><div class="gallery"><div class="g big">🏫<br>विद्यालय भवन</div><div class="g">👨‍🏫<br>शिक्षक</div><div class="g">🎓<br>विद्यार्थी</div><div class="g">📖<br>कक्षा</div><div class="g">🏅<br>उपलब्धियाँ</div></div></div></section>
+<section id="contact" class="section contact"><div class="wrap"><div class="heading"><span>संपर्क</span><h2>संपर्क एवं जानकारी</h2></div><div class="contact-grid"><div><h3>सरस्वती विद्या निकेतन (मॉडल स्कूल)</h3><p>उत्क्रमित उच्चतर माध्यमिक विद्यालय, बनकटवा, पूर्वी चंपारण, बिहार</p><p><strong>U-DISE:</strong> 10020400220</p></div><div><h3>महत्वपूर्ण लिंक</h3><p><a href="#notice">सूचना पटल</a> · <a href="#academics">शैक्षणिक जानकारी</a> · <a href="#gallery">फोटो गैलरी</a></p><p class="admin-note">भविष्य में इस पोर्टल में डाउनलोड, स्टाफ प्रोफाइल और सुरक्षित एडमिन पैनल जोड़ा जा सकता है।</p></div></div></div></section>
 <footer class="footer">© 2026 सरस्वती विद्या निकेतन (मॉडल स्कूल), बनकटवा, पूर्वी चंपारण • सभी अधिकार सुरक्षित</footer>
+
+<script>
+document.addEventListener("DOMContentLoaded", function(){
+  const slider = document.querySelector(".school-slider");
+  if(!slider) return;
+
+  const slides = [...slider.querySelectorAll(".slide")];
+  const dots = [...slider.querySelectorAll(".dot")];
+  const prev = slider.querySelector(".prev");
+  const next = slider.querySelector(".next");
+
+  let current = 0;
+  let timer;
+
+  function show(index){
+    current = (index + slides.length) % slides.length;
+
+    slides.forEach((slide,i)=>{
+      slide.classList.toggle("active", i === current);
+    });
+
+    dots.forEach((dot,i)=>{
+      dot.classList.toggle("active", i === current);
+    });
+  }
+
+  function startAutoSlide(){
+    clearInterval(timer);
+    timer = setInterval(()=>{
+      show(current + 1);
+    },4000);
+  }
+
+  prev.addEventListener("click",()=>{
+    show(current - 1);
+    startAutoSlide();
+  });
+
+  next.addEventListener("click",()=>{
+    show(current + 1);
+    startAutoSlide();
+  });
+
+  dots.forEach((dot,i)=>{
+    dot.addEventListener("click",()=>{
+      show(i);
+      startAutoSlide();
+    });
+  });
+
+  let startX = 0;
+
+  slider.addEventListener("touchstart",e=>{
+    startX = e.touches[0].clientX;
+  },{passive:true});
+
+  slider.addEventListener("touchend",e=>{
+    const diff = e.changedTouches[0].clientX - startX;
+
+    if(Math.abs(diff) > 45){
+      show(diff < 0 ? current + 1 : current - 1);
+      startAutoSlide();
+    }
+  },{passive:true});
+
+  show(0);
+  startAutoSlide();
+});
+</script>
+
 </body></html>
